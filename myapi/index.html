@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供您免费使用的个人api接口</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="shortcut icon" href="favico.ico">
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>供您免费使用的个人api接口</h2>
+        <p>这是一个获取6种类型新闻资讯的接口,有:体育,教育,娱乐,军事,旅游,科技这6大板块。你不会爬虫没关系,只需要用以下这个接口即可。</p>
+
+        <p>接口地址:http://www.hengsir.cn:8080/hengsir_api/news.do?type=</p>
+
+        <p>demo下载: <a href="demo_hengsir_api_news.zip">demo_hengsir_api_news.zip</a> </p>
+        <p>使用方法:(java普通类)</p>
+
+        <p>1、要知道调用接口后响应回来的是一个List的json对象,所以需要建一个pojo类,里面有两个成员,分别是"newsName","newsHref"
+            <span style="color: red">切记一定要跟我的相同</span>
+        </p>
+        <img src="pojo.png" alt="">
+        
+        <p>2、编写方法使用URL访问,用输入流写进来 <span style="color: red;">注:需要导入 <a href="gson-2.8.0.jar">gson-2.8.0.jar</a>这个包(点击下载)</span></p>
+        <img src="method.png" alt=""> <br>
+        <span>main方法中执行测试</span><br>
+        <img src="class.png" alt=""> <br>
+        <span>控制台输出:</span><br>
+        <img src="console.png" alt="">
+
+
+
+
+    </div>
+
+
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5月13号有大事</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
+    <meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
+    <!--引用百度地图API-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4a3KkaWxhGGYVeZotviFSKqHKltfK9rE"></script>
+    <style>
+
+
+
+        h1{
+            font-size: 40px;
+            color:cornflowerblue;
+        }
+        body{
+            text-align: center;
+            background-color: #484848;
+        }
+        p,span{
+            color: azure;
+        }
+
+        #map{
+            margin-left: auto;
+            margin-right: auto;
+            width: 700px;
+            height: 550px;
+            border:#ccc solid 1px;
+            font-size: 12px;
+        }
+        @media only screen and (max-width: 480px){
+            #map{
+                width: 100%;
+
+            }
+
+        }
+        label.BMapLabel {
+            color: black;
+
+        }
+    </style>
+    <script>
+        document.getElementById("map").style.height=document.documentElement.clientHeight;
+
+    </script>
+</head>
+<body>
+        <h1>5月13号毕业照</h1>
+        <p>广东工贸职业技术学院天河校区西区</p>
+        <span>周宇恒</span>
+        <br><br><br>
+        <!--百度地图容器-->
+        <span>梅花园地铁站D出口</span>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" user-scalable="no;">
+    <div id="map"></div>
+
+
+</body>
+<script type="text/javascript">
+    //创建和初始化地图函数：
+    function initMap(){
+        createMap();//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+        addMapOverlay();//向地图添加覆盖物
+    }
+    function createMap(){
+        map = new BMap.Map("map");
+        map.centerAndZoom(new BMap.Point(113.321741,23.179759),17);
+    }
+    function setMapEvent(){
+        map.enableScrollWheelZoom();
+        map.enableKeyboard();
+        map.enableDragging();
+        map.enableDoubleClickZoom()
+    }
+    function addClickHandler(target,window){
+        target.addEventListener("click",function(){
+            target.openInfoWindow(window);
+        });
+    }
+    function addMapOverlay(){
+        var markers = [
+            {content:"上了天桥往左边下就能看到",title:"学校门口,上了天桥往左边下就能看到",color:"#00f",imageOffset: {width:0,height:3},position:{lat:23.1775,lng:113.32467}}
+        ];
+        for(var index = 0; index2 < markers.length; index2++ ){
+            var point = new BMap.Point(markers[index2].position.lng,markers[index2].position.lat);
+            var marker = new BMap.Marker(point,{icon:new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png",new BMap.Size(20,25),{
+                imageOffset: new BMap.Size(markers[index2].imageOffset.width,markers[index2].imageOffset.height)
+            })});
+            var label = new BMap.Label(markers[index2].title,{offset: new BMap.Size(25,5)});
+            var opts = {
+                width: 200,
+                title: markers[index2].title,
+                enableMessage: false
+            };
+            var infoWindow = new BMap.InfoWindow(markers[index2].content,opts);
+            marker.setLabel(label);
+            addClickHandler(marker,infoWindow);
+            map.addOverlay(marker);
+        };
+        var plOpts = [
+            {strokeColor:"#00f",strokeWeight:"4",strokeOpacity:"0.6"}
+        ];
+        var plPath = [
+            [
+                new BMap.Point(113.324733,23.17745),
+                new BMap.Point(113.3248,23.177434),
+                new BMap.Point(113.324899,23.177716),
+                new BMap.Point(113.325307,23.177533),
+                new BMap.Point(113.326592,23.180233),
+                new BMap.Point(113.32696,23.181229),
+                new BMap.Point(113.32696,23.181225),
+                new BMap.Point(113.32696,23.181225),
+                new BMap.Point(113.32696,23.181225)
+            ],
+        ];
+        for(var index = 0; index2 < plOpts.length; index2++){
+            var polyline = new BMap.Polyline(plPath[index2],plOpts[index2]);
+            map.addOverlay(polyline);
+        }
+    }
+    //向地图添加控件
+    function addMapControl(){
+        var scaleControl = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+        scaleControl.setUnit(BMAP_UNIT_IMPERIAL);
+        map.addControl(scaleControl);
+        var navControl = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+        map.addControl(navControl);
+        var overviewControl = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:true});
+        map.addControl(overviewControl);
+    }
+    var map;
+    initMap();
+</script>
+</html>

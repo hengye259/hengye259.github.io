@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>安卓自定义adapter使用心得</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+<section>
+    <!--线条特效-->
+    <!--<script src="http://open.sojson.com/common/js/canvas-nest.min.js" count="200" zindex="-2" opacity="0.5" color="47,135,193" type="text/javascript">
+    </script>-->
+
+    <div class="context">
+
+        <h2>安卓自定义adapter使用心得</h2>
+        <p>在以前刚开始学习listview + adapter时,没有很在意adapter的使用,也只对它本身重写的一些方法有了解。</p>
+        <br>
+        <p>但是,越深入学习,项目要求功能越来越多时,对adapter的了解也要更深入,这篇文章讲一下我在写代码时,偶到的问题和解决方法</p>
+        <br>
+        <p>这是我做的作业,老师非要加这些看似没用的要求,就是因为这些要求让我了解了如何在Activity中控制adapter从而在显示的listview item有变化</p>
+        <br>
+        <img src="t1.png" alt="">
+        <img src="t2.png" alt="">
+        <img src="t3.png" alt="">
+        <br><br>
+        <p>自定义adapter类中,把数据呈现到listview上的关键方法是public View getView(int position, View convertView, ViewGroup parent){}
+            position是itemid,这是给item做点击事件处理的重要属性。
+        </p>
+        <br>
+        <p>那么怎么来在Activity中来操控listview item呢</p>
+        <br>
+        <p>首先在adapter中添加一些成员变量 index负责记录点击的itemid  counts记录该item点击过的次数  bm就是该item相应的天气图片
+            这里用到list来存放就是因为如果用单个变量下次点击别的item后原来item就会变回原来什么都没有的状态
+        </p>
+        <br>
+        <img src="tcybl.png" alt="" class="tempPic"><br>
+        <img src="tgsff.png" alt="" class="tempPic">
+        <p>然后再activity中的操作写上下面代码</p>
+        <p>这是点击一下要记数+1,由于要求返回时才显示记数,所以此处不加notifyDataChange()方法</p>
+        <img src="tdjsj.png" alt="" class="tempPic">
+        <br>
+        <p>下载图片后返回到activity后要给相应的item传上图片,先获取到改变item的必要条件,然后把itemid 图片 点击数都处理好调用set方法</p>
+        <img src="tresult.png" alt="" class="tempPic">
+        <br>
+        <p>前面说了adapter中getView方法是显示item的根本方法,所以要在这方法内做一些处理</p>
+        <img src="tgetview.png" alt="" class="tempPic">
+        <br><br>
+        <p>总结:在adapter外的类要操作listview中的item,先要在adapter类中设置成员变量和相应的方法,然后在getView()中做操作</p>
+
+
+    </div>
+
+    <!-- UY BEGIN -->
+    <div id="uyan_frame" class="pinglun"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+    <!-- UY END -->
+
+</section>
+
+
+</body>
+</html>

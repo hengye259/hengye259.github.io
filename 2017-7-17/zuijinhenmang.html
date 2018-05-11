@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>最近很忙</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="shortcut icon" href="favico.ico">
+
+</head>
+<body>
+<section>
+    <div class="context">
+
+        <h2>最近很忙</h2>
+        <p>我最近一个月因为将要培训,和参加比赛准备的事忙得一塌糊涂。现在我也已经平安的到达东软睿道,第二周培训开始。。。</p>
+        <p>我现在参加了"蓝盾杯",负责移动端的模块,因为是安卓,要用android studio,我和我的团队也遇到了很麻烦的问题还没能解决,
+            就是"项目管理",之前做java web时用eclipse使用svn,项目放在淘宝code上很方便,也没什么难度。但是换过来用ide后问题
+            就特别的多,环境,配置文件的我也不清楚,用过git,用过svn,但就是各种问题,如有大神知道android studio如何完整的使用
+            svn或git团队管理项目,并有注意的地方最好,请加微信"Stronger_BB"。如能解决重稠。
+        </p>
+
+        <p>虽然在管理项目上有点问题,但不影响我对功能的实现。</p>
+        <span>这是整体架构</span><br>
+        <img src="jiagou.jpg" alt="">
+
+        <h3>开发流程:</h3>
+        <p>要完成这个开发，你要走通3个helloworld：</p>
+        <ul>
+            <li>android 端的helloworld，代表你的模拟器和android sdk配置完成</li>
+            <li>java web的helloworld代表你服务器端配置完成</li>
+            <li>数据库端的helloworld(就是一些select语句，这里为了工整使用helloworld代表)</li>
+        </ul>
+
+        <p>Android端就是平时我们的手机客户端，Java web程序放在服务器上，android与java web交互，获取信息，收到android客户端的信息后，Java web向数据库请求信息。具体见下面的流程</p>
+
+        <h3>接下来描述程序的整体流程</h3>
+        <ul>
+            <li>1. android端发出http请求(Get请求或者Post请求，不理解也没关系)</li>
+            <li>2. 服务器端java web程序接受请求。</li>
+            <li>3. 服务器端java web程序访问数据库，获得返回结果。</li>
+            <li>4. 服务器端java web程序将返回结果传输给客户端。</li>
+            <li>5. 客户端得到结果，显示给客户使用。</li>
+        </ul>
+
+
+        <p>我本人主要负责服务器端和app的后台实现,目前完成到的地步是数据库方法与搭建都大致完成,可能会有少些要修改。在查找了资料
+            和自己做了1天,发现了一个android的"<a href="https://github.com/wyouflf/xUtils" target="_blank">XUtils</a>"包特别好用(此包集
+            结了中国工程师们的智慧，帮助我们极大的简化了网络通讯，代码简化，各种高性能优点)
+        </p>
+
+        <p>
+            等我的项目完成后会把apk放上,然后还会有关键代码和我认为有趣的代码,拜拜
+        </p>
+
+
+    </div>
+
+    <!-- UY BEGIN -->
+    <div id="uyan_frame" class="pinglun"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+    <!-- UY END -->
+
+</section>
+
+</body>
+</html>
