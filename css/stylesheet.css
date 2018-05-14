@@ -140,6 +140,10 @@
     }
     
     @media only screen and (max-device-width: 620px){
+        .box{
+            display: flex;
+            flex-direction: column;
+        }
         nav{
             margin-bottom: 10px;
             padding-left: 0;
@@ -156,6 +160,14 @@
         }
         .pc{
             display: none;
+        }
+
+        .gonggao{
+            margin-bottom: 10px;
+            margin-left: 5%;
+            margin-top: 90px;
+            margin-bottom: 10px;
+            width: 80%;
         }
 
     }
