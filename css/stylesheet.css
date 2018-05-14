@@ -8,7 +8,9 @@
         color: #333;
         background-color: #fff;
     }
-
+    .box{
+        display: flex;
+    }
     img {
         width:70%;
         box-shadow: 0 0 10px #555;
@@ -51,6 +53,7 @@
 
 
     nav{
+        flex: 7;
         margin-bottom: 20px;
         padding-left: 0;
         margin-top: 100px;
@@ -62,6 +65,15 @@
         display: block;
         padding: 2% 8% 5% 8%;
 
+    }
+
+    .gonggao{
+        flex:2;
+        margin-bottom: 20px;
+        padding-left: 0;
+        margin-top: 100px;
+        margin-right: 10%;
+        width: 20%;
     }
 
     .list{
