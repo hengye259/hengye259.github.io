@@ -71,6 +71,9 @@
             border-color: grey;
             width: 90%;
         }
+        body{
+            font-size: 30px;
+        }
         img {
             width:90%;
             box-shadow: 0 0 10px #555;
