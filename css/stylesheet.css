@@ -74,6 +74,7 @@
         margin-top: 100px;
         margin-right: 10%;
         width: 20%;
+        height: 200px;
     }
 
     .list{
@@ -193,6 +194,7 @@
             margin-top: 90px;
             margin-bottom: 10px;
             width: 80%;
+            height: 500px;
         }
 
     }
