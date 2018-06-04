@@ -63,6 +63,10 @@
     .tempPic{
         width:90%;
     }
+
+    a{
+        cursor: crosshair;
+    }
     @media only screen and (max-device-width: 620px){
         section {
             display: table;

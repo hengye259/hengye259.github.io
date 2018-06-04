@@ -60,6 +60,10 @@
         -webkit-margin-end: 0px;
     }
 
+    a{
+        cursor: crosshair;
+    }
+
     .tempPic{
         width:90%;
     }

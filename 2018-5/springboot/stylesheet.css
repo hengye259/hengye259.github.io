@@ -64,6 +64,10 @@
         width:90%;
     }
 
+    a{
+        cursor: crosshair;
+    }
+
     blockquote {
         border-left: 4px lightgrey solid;
         padding-left: 5px;

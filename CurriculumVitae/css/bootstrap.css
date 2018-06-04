@@ -129,7 +129,7 @@ html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
-  cursor: pointer;
+  cursor:crosshair;
 }
 button[disabled],
 html input[disabled] {
@@ -1169,7 +1169,7 @@ hr {
   clip: auto;
 }
 [role="button"] {
-  cursor: pointer;
+  cursor:crosshair;
 }
 h1,
 h2,
@@ -2644,7 +2644,7 @@ input[type="search"] {
   padding-left: 20px;
   margin-bottom: 0;
   font-weight: normal;
-  cursor: pointer;
+  cursor:crosshair;
 }
 .radio input[type="radio"],
 .radio-inline input[type="radio"],
@@ -2666,7 +2666,7 @@ input[type="search"] {
   margin-bottom: 0;
   font-weight: normal;
   vertical-align: middle;
-  cursor: pointer;
+  cursor:crosshair;
 }
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
@@ -3012,7 +3012,7 @@ select[multiple].input-lg {
   vertical-align: middle;
   -ms-touch-action: manipulation;
       touch-action: manipulation;
-  cursor: pointer;
+  cursor:crosshair;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -4858,7 +4858,7 @@ a.label:hover,
 a.label:focus {
   color: #fff;
   text-decoration: none;
-  cursor: pointer;
+  cursor:crosshair;
 }
 .label:empty {
   display: none;
@@ -4939,7 +4939,7 @@ a.badge:hover,
 a.badge:focus {
   color: #fff;
   text-decoration: none;
-  cursor: pointer;
+  cursor:crosshair;
 }
 .list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
@@ -5852,14 +5852,14 @@ button.list-group-item-danger.active:focus {
 .close:focus {
   color: #000;
   text-decoration: none;
-  cursor: pointer;
+  cursor:crosshair;
   filter: alpha(opacity=50);
   opacity: .5;
 }
 button.close {
   -webkit-appearance: none;
   padding: 0;
-  cursor: pointer;
+  cursor:crosshair;
   background: transparent;
   border: 0;
 }
@@ -6404,7 +6404,7 @@ button.close {
   height: 10px;
   margin: 1px;
   text-indent: -999px;
-  cursor: pointer;
+  cursor:crosshair;
   background-color: #000 \9;
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid #fff;

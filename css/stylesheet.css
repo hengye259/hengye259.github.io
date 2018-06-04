@@ -100,7 +100,7 @@
     }
 
     .title {
-        cursor: pointer;
+        cursor:crosshair;
     }
 
     .list:hover{
@@ -121,6 +121,7 @@
         text-decoration: none;
         background: 0 0;
         display: block;
+        cursor: crosshair;
     }
 
 
