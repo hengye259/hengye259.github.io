@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rxtx-java串口通信</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="shortcut icon" href="favico.ico">
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>Rxtx-java串口通信</h2>
+        <p>
+            由于最近工作内容的原因，接触到了串口通信方面的开发，并且曾经因为dll指针控制的原因造成的各种bug，所以寻求另一条出路希望可以跳过dll，直接由java
+            与串口做通信。经过近期的开发总结出来两种方式，不过这里只对其中一种做详细的介绍。<br>
+        <ul>
+            <li>第一种：使用jni，通过c端与串口连接的硬件通信</li>
+            <li>第二种：使用java开源类库Rxtx</li>
+        </ul>
+        </p>
+        <hr>
+        <p>
+            详细介绍第二种：<br>
+            准备工作：<br>
+        <ul>
+            <li><a href="mfz-rxtx-2.2-20081207-win-x64.zip">1、点击下载库mfz-rxtx-2.2-20081207-win-x64.zip</a></li>
+            <li>2、将rxtxSerial.dll、rxtxParallel.dll复制到&lt;JAVA_HOME&gt;\jre\bin目录下</li>
+            <li>3、将RXTXcomm.jar复制到&lt;JAVA_HOME&gt;\jre\lib\ext目录下</li>
+            <li>4、在idea中的Project Structure--->左边的Libraries添加这个jar包进入项目 <br>
+                或者eclipse中build path-->Configure Build Path --> Libraries --> Add External JARs...--->找到&lt;JAVA_HOME>/jre/lib/ext目录下的RXTXcomm.jar--->打开-->OK
+            </li>
+        </ul>
+        </p>
+
+        <hr>
+        <p>
+            第一步：获取端口<br>
+        <pre>
+            <code>
+    /**
+     * 获取端口，根据设备管理器修改配置文件，然后从配置文件中读取出端口号
+     * 这里是根据特定端口号来获取端口，也可以获取所有可用端口
+     * @return
+     */
+    public CommPortIdentifier getComPort(){
+        String portName = Configs.DEVICE_NAME_VALUE;
+        System.out.println("--------端口号为：--"+portName);
+        CommPortIdentifier port = null;
+        try {
+            System.out.println("--------准备获取端口---------");
+            port = CommPortIdentifier.getPortIdentifier(portName);
+            //CommPortIdentifier.getPortIdentifiers();该方法是获取所有端口
+            System.out.println("--------获取端口成功---------");
+        } catch (NoSuchPortException e) {
+            System.out.println("--------获取端口失败,没有该端口---------");
+            e.printStackTrace();
+        }
+        return port;
+    }
+            </code>
+        </pre>
+
+        </p>
+        <p>
+            第二步：打开连接 <br>
+            <pre>
+                <code>
+    /**
+     * 打开串口连接，将获取的串口当参数传入
+     * @param port
+     * @return
+     */
+    public boolean openSerialPort(CommPortIdentifier port){
+        try {
+            serialPort = (SerialPort) port.open(appName,PARAMS_DELAY);
+            isOpen = true;
+            System.out.println("--------连接串口成功---------");
+            is = serialPort.getInputStream();/*获取端口的输入流对象*/
+            os = serialPort.getOutputStream();/*获取端口的输出流对象*/
+            serialPort.addEventListener(this);/*注册一个SerialPortEventListener事件来监听串口事件*/
+            System.out.println("--------添加监听串口事件---------");
+            serialPort.notifyOnDataAvailable(true);/*数据可用*/
+            //设置串口初始化参数，依次是波特率，数据位，停止位和校验
+            serialPort.setSerialPortParams(PARAMS_BUADRATE, SerialPort.DATABITS_8,SerialPort.STOPBITS_1 , SerialPort.PARITY_NONE);
+        } catch (PortInUseException e) {
+            e.printStackTrace();
+            System.out.println("--------连接串口失败---------");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TooManyListenersException e) {
+            e.printStackTrace();
+        } catch (UnsupportedCommOperationException e) {
+            e.printStackTrace();
+        }
+        return isOpen;
+    }
+
+                </code>
+            </pre>
+        </p>
+
+        <p>
+            第三步：添加事件监听 <br>
+            <pre>
+                <code>
+    /**
+     * 事件监听
+     */
+    @Override
+    public void serialEvent(SerialPortEvent event) {
+        /*
+         * 此处省略一下事件，可酌情添加
+         *  SerialPortEvent.BI:/*Break interrupt,通讯中断
+         *  SerialPortEvent.OE:/*Overrun error，溢位错误
+         *  SerialPortEvent.FE:/*Framing error，传帧错误
+         *  SerialPortEvent.PE:/*Parity error，校验错误
+         *  SerialPortEvent.CD:/*Carrier detect，载波检测
+         *  SerialPortEvent.CTS:/*Clear to send，清除发送
+         *  SerialPortEvent.DSR:/*Data set ready，数据设备就绪
+         *  SerialPortEvent.RI:/*Ring indicator，响铃指示
+         *  SerialPortEvent.OUTPUT_BUFFER_EMPTY:/*Output buffer is empty，输出缓冲区清空
+         */
+        if(event.getEventType()==SerialPortEvent.DATA_AVAILABLE){
+            /*Data available at the serial port，端口有可用数据。读到缓冲数组，输出到终端*/
+            try {
+                while(is.available()>0){
+                    is.read(readBuffer);//收到的数据再此，可视情况处理
+                }
+                System.out.println("--------收到数据为："+new String(readBuffer))
+            } catch (IOException e) {
+            }
+        }
+    }
+                </code>
+            </pre>
+        </p>
+
+        <p>
+            第四步：关闭接连 <br>
+            <pre>
+                <code>
+    /**
+     * 关闭串口
+     * @return
+     */
+    public boolean close(){
+        if (isOpen) {
+            try {
+                serialPort.notifyOnDataAvailable(false);
+                serialPort.removeEventListener();
+                is.close();
+                os.close();
+                serialPort.close();
+                isOpen = false;
+                System.out.println("--------关闭串口成功---------");
+            } catch (IOException ex) {
+                System.out.println("--------关闭串口失败---------");
+                ex.printStackTrace();
+            }
+        }
+        return isOpen;
+    }
+                </code>
+            </pre>
+        </p>
+        <hr>
+        <p>
+            总实现：
+        <pre><code>
+package com.zjht.mispos.apis.test;
+
+import com.zjht.mispos.utils.Configs;
+import com.zjht.mispos.utils.PropertyUtil;
+import com.zjht.mispos.utils.Utils;
+import gnu.io.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.*;
+import java.util.concurrent.*;
+
+public class SerialTest extends Observable implements SerialPortEventListener {
+
+    public static void main(String[] args){
+        SerialTest st = new SerialTest();
+        PropertyUtil.checkConfigInfo();
+        CommPortIdentifier comm = st.getComPort();
+        st.openSerialPort(comm);
+        String str = "hello world";
+        resultLeangth = str.getBytes().length;
+        readBuffer = new byte[resultLeangth];
+        st.sendMessage(str);
+        //st.close();
+    }
+
+    private static boolean isOpen=false;
+    //static Set&lt;CommPortIdentifier> portList=new HashSet&lt;CommPortIdentifier>();
+    final static String appName="mispos";
+    private static InputStream is;
+    private static OutputStream os;
+    private static SerialPort serialPort;
+    static byte[] readBuffer = null;
+    static int resultLeangth = 0;
+
+    public static final int PARAMS_DELAY = 100; //
+    public static final int PARAMS_BUADRATE = 115200;//波特率
+    public static final int PARAMS_TIMEOUT = 120; // 超时时间
+    public static final String PARAMS_PORT = Configs.DEVICE_NAME_VALUE; // 端口名称
+    public static final int PARAMS_DATABITS = 8; //数据位
+    public static final int PARAMS_STOPBITS = 1; //停止位
+    public static final int PARAMS_PARITY = SerialPort.PARITY_NONE; // 奇偶校验
+
+
+    /**
+     * 获取端口，根据设备管理器修改配置文件，然后从配置文件中读取出端口号
+     * @return
+     */
+    public CommPortIdentifier getComPort(){
+        String portName = Configs.DEVICE_NAME_VALUE;
+        System.out.println("--------端口号为：--"+portName);
+        CommPortIdentifier port = null;
+        try {
+            System.out.println("--------准备获取端口---------");
+            port = CommPortIdentifier.getPortIdentifier(portName);
+            System.out.println("--------获取端口成功---------");
+        } catch (NoSuchPortException e) {
+            System.out.println("--------获取端口失败,没有该端口---------");
+            e.printStackTrace();
+        }
+        return port;
+    }
+
+
+    /**
+     * 打开串口连接，将获取的串口当参数传入
+     * @param port
+     * @return
+     */
+    public boolean openSerialPort(CommPortIdentifier port){
+        try {
+            serialPort = (SerialPort) port.open(appName,PARAMS_DELAY);
+            isOpen = true;
+            System.out.println("--------连接串口成功---------");
+            is = serialPort.getInputStream();/*获取端口的输入流对象*/
+            os = serialPort.getOutputStream();/*获取端口的输出流对象*/
+            serialPort.addEventListener(this);/*注册一个SerialPortEventListener事件来监听串口事件*/
+            System.out.println("--------添加监听串口事件---------");
+            serialPort.notifyOnDataAvailable(true);/*数据可用*/
+            //设置串口初始化参数，依次是波特率，数据位，停止位和校验
+            serialPort.setSerialPortParams(PARAMS_BUADRATE, SerialPort.DATABITS_8,SerialPort.STOPBITS_1 , SerialPort.PARITY_NONE);
+        } catch (PortInUseException e) {
+            e.printStackTrace();
+            System.out.println("--------连接串口失败---------");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TooManyListenersException e) {
+            e.printStackTrace();
+        } catch (UnsupportedCommOperationException e) {
+            e.printStackTrace();
+        }
+        return isOpen;
+    }
+
+
+    /**
+     * 关闭串口
+     * @return
+     */
+    public boolean close(){
+        if (isOpen) {
+            try {
+                serialPort.notifyOnDataAvailable(false);
+                serialPort.removeEventListener();
+                is.close();
+                os.close();
+                serialPort.close();
+                isOpen = false;
+                System.out.println("--------关闭串口成功---------");
+            } catch (IOException ex) {
+                System.out.println("--------关闭串口失败---------");
+                ex.printStackTrace();
+            }
+        }
+        return isOpen;
+    }
+
+
+    /**
+     * 简单的发送数据
+     * @param message
+     * @return
+     */
+    public boolean sendMessage(String message){
+        try {
+            os.write(message.getBytes());
+            System.out.println("--------发送数据为：---"+message);
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 事件监听
+     */
+    @Override
+    public void serialEvent(SerialPortEvent event) {
+        /*
+         * 此处省略一下事件，可酌情添加
+         *  SerialPortEvent.BI:/*Break interrupt,通讯中断
+         *  SerialPortEvent.OE:/*Overrun error，溢位错误
+         *  SerialPortEvent.FE:/*Framing error，传帧错误
+         *  SerialPortEvent.PE:/*Parity error，校验错误
+         *  SerialPortEvent.CD:/*Carrier detect，载波检测
+         *  SerialPortEvent.CTS:/*Clear to send，清除发送
+         *  SerialPortEvent.DSR:/*Data set ready，数据设备就绪
+         *  SerialPortEvent.RI:/*Ring indicator，响铃指示
+         *  SerialPortEvent.OUTPUT_BUFFER_EMPTY:/*Output buffer is empty，输出缓冲区清空
+         */
+        if(event.getEventType()==SerialPortEvent.DATA_AVAILABLE){
+            /*Data available at the serial port，端口有可用数据。读到缓冲数组，输出到终端*/
+            try {
+                while(is.available()>0){
+                    is.read(readBuffer);//收到的数据再此，可视情况处理
+                }
+                System.out.println("--------收到数据为："+new String(readBuffer))
+            } catch (IOException e) {
+            }
+        }
+    }
+}
+
+
+
+    </code></pre>
+        </p>
+
+        <p style="margin-left: 96%">〔完〕</p>
+
+    </div>
+
+</section>
+
+</body>
+</html>
