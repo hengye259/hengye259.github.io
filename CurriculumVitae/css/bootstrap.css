@@ -2708,7 +2708,7 @@ fieldset[disabled] .checkbox label {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
   border-radius: 3px;
 }
 select.input-sm {
@@ -2723,7 +2723,7 @@ select[multiple].input-sm {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
   border-radius: 3px;
 }
 .form-group-sm select.form-control {
@@ -2739,7 +2739,7 @@ select[multiple].input-sm {
   min-height: 32px;
   padding: 6px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
 }
 .input-lg {
   height: 46px;
@@ -3442,14 +3442,14 @@ fieldset[disabled] .btn-link:focus {
 .btn-group-sm > .btn {
   padding: 5px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
   border-radius: 3px;
 }
 .btn-xs,
 .btn-group-xs > .btn {
   padding: 1px 5px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
   border-radius: 3px;
 }
 .btn-block {
@@ -3862,7 +3862,7 @@ select[multiple].input-group-lg > .input-group-btn > .btn {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
   border-radius: 3px;
 }
 select.input-group-sm > .form-control,
@@ -4792,7 +4792,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination-sm > li > span {
   padding: 5px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height:1.8;
 }
 .pagination-sm > li:first-child > a,
 .pagination-sm > li:first-child > span {
