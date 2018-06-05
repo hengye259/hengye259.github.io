@@ -34,7 +34,7 @@
         font-size: 30px;
     }
     section{
-        display:table;
+        display:block;
         border-collapse: separate;
         border-spacing: 5px;
         border-color: black;

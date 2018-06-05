@@ -45,7 +45,7 @@
         color: cornflowerblue;
     }
     section{
-        display:table;
+        display:block;
         border-collapse: separate;
         border-spacing: 2px;
         border-color: grey;

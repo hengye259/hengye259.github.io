@@ -45,7 +45,7 @@
         color: cornflowerblue;
     }
     section{
-        display:table;
+        display:block;
         border-collapse: separate;
         border-spacing: 2px;
         border-color: grey;
@@ -93,7 +93,7 @@
     }
     @media only screen and (max-device-width: 620px){
         section {
-            display: table;
+            display: block;
             border-collapse: separate;
             border-spacing: 2px;
             border-color: grey;
