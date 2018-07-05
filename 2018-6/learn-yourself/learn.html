@@ -125,7 +125,7 @@
             alert("您的大名还没写")
             return;
         } else {
-            $.post("http://hengsir.cn:8081/comm/to-comment",
+            $.post("http://hengsir.cn:443/comm/to-comment",
                 {text:text,blogName:blogName,author:author},
                 function (data) {
                     if (data.result == true){
@@ -140,7 +140,7 @@
 
     function getComment() {
         var blogName = $("title").text();
-        $.get("http://hengsir.cn:8081/comm/get-comments",
+        $.get("http://hengsir.cn:443/comm/get-comments",
             {blogName:blogName},
             function (data) {
                 console.log(data);
