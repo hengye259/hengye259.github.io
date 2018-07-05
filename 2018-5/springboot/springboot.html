@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>SpringBoot整合SSM + Shiro + Thymeleaf搭建web项目（配置部分）</title>
+    <script src="jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
     <link rel="shortcut icon" href="favico.ico">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 <body>
 <section>
@@ -511,8 +514,87 @@ public class Main {
         <p style="margin-left: 96%">〔完〕</p>
 
     </div>
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
 
 </section>
+<script>
+    $(function () {
+
+        getComment();
+
+        $("#btn-comment").click(function () {
+            $("#comment-form").removeClass("hide");
+        })
+        $("#close").click(function () {
+            $("#comment-form").addClass("hide");
+        })
+        $("#submit").click(function () {
+            send($("#com-text").val(),$("#com-author").val());
+        })
+    });
+
+    function send(text,author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text){
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("http://hengsir.cn:443/comm/to-comment",
+                {text:text,blogName:blogName,author:author},
+                function (data) {
+                    if (data.result == true){
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+
+    function getComment() {
+        var blogName = $("title").text();
+        $.get("http://hengsir.cn:443/comm/get-comments",
+            {blogName:blogName},
+            function (data) {
+                console.log(data);
+                for(var i = 0;i < data.length;i++) {
+                    var html = "";
+                    html += '<div class="comment-li">'
+                    html += '<b class="author">' + data[i].author + ':</b>'
+                    html += '</br>'
+                    html += '<span class="text">' + data[i].text + '</span>'
+                    html += '</div>'
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+</script>
 
 </body>
 </html>
