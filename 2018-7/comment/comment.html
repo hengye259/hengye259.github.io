@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增留言功能与实现过程</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
+    <link rel="shortcut icon" href="favico.ico">
+    <script src="jquery-1.11.1.min.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>新增留言功能与实现过程</h2>
+        <p>一直有人说让我在博客里添加评论功能，但这是放在github的服务器里，而github是只允许纯静态资源的内容，所以说不能有java代码
+        在项目中，前天突然看到了"跨域"这个词，瞬间有了想法，就是尝试利用跨域来实现添加评论功能。也只是抱着试试，我也不知道github是否允许，
+        研究了下，踩了一些坑后，如今终于完成。</p>
+        <p>
+            具体实现：
+        <ol>
+            <li>后端：Springboot 搭建接口，调用数据库什么的。最重要的是设置允许跨域请求，然后就放服务器跑起来。</li>
+            <li>前端：ajax请求，自行处理</li>
+        </ol>
+        </p>
+
+        <hr>
+        <p>Springboot设置允许跨域请求：添加配置类，在其中加入这个Bean
+            <pre>
+        <code>
+@Configuration
+public class SpringMVCConfig{
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        WebMvcConfigurer config = new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("*")
+                        .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
+                        .allowCredentials(false).maxAge(3600);
+            }
+        };
+        return config;
+    }
+}
+        </code>
+    </pre>
+        </p>
+
+        <hr>
+        <p>
+            前端js进行 ajax 请求：
+            <pre>
+        <code>
+//这个是提交评论，虽然有三个参数，但只需要text评论内容和author评论人就行，blogName是title的值
+function send(text,author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text){
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("http://hengsir.cn:443/comm/to-comment",
+                {text:text,blogName:blogName,author:author},
+                function (data) {
+                    if (data.result == true){
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+        </code>
+    </pre>
+
+        <pre>
+        <code>
+//这个是获取博文的评论，虽然有一个参数，但也是不需要传
+function getComment() {
+        var blogName = $("title").text();
+        $.get("http://hengsir.cn:443/comm/get-comments",
+            {blogName:blogName},
+            function (data) {
+                console.log(data);
+                for(var i = 0;i < data.length;i++) {
+                    var html = "";
+                    //组装自己的html列表，再动态append
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+        </code>
+    </pre>
+
+        </p>
+        <hr>
+        <p>弄完这些，github是https的所以不能访问http的资源，所以一开始的办法是在html的head标签内加入 <br>
+            &lt;meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"&gt;
+            <br> 用意貌似是将http资源自动转成https的，但是我后端没有配置ssl一样是无法成功在github内跨域，所以需要在Springboot中也添加ssl的配置,首先要有个证书文件，腾讯云的去腾讯云下载，其它同理，下载完后把证书文件放到类resource目录下</p>
+
+        <pre>
+            <code>
+#在config.properties文件中添加以下配置
+#新增ssl证书
+server.port=443
+server.ssl.key-store=classpath:www.hengsir.cn.jks
+server.ssl.key-store-password=你自己的密码
+server.ssl.key-store-type=JKS
+            </code>
+        </pre>
+        <p>在主启动类中添加以下两个方法：
+        <pre>
+        <code>
+    @Bean
+    public ServletWebServerFactory servletContainer(){
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+        return tomcat;
+    }
+
+    // 配置http
+    private Connector createStandardConnector() {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setPort(8080);
+        connector.setSecure(false);
+        connector.setRedirectPort(443);//自动重定向到443端口
+        return connector;
+    }
+        </code>
+    </pre>
+        </p>
+        <hr>
+        <p>以上就是本次新增的留言功能实现的过程，接口可以开放提供调用，只要你有网站需要，就能用。</p>
+        <p style="margin-left: 96%">〔完〕</p>
+
+    </div>
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
+
+
+</section>
+
+
+<script>
+    $(function () {
+
+        getComment();
+
+        $("#btn-comment").click(function () {
+            $("#comment-form").removeClass("hide");
+        })
+        $("#close").click(function () {
+            $("#comment-form").addClass("hide");
+        })
+        $("#submit").click(function () {
+            send($("#com-text").val(),$("#com-author").val());
+        })
+    });
+
+    function send(text,author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text){
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("http://hengsir.cn:443/comm/to-comment",
+                {text:text,blogName:blogName,author:author},
+                function (data) {
+                    if (data.result == true){
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+
+    function getComment() {
+        var blogName = $("title").text();
+        $.get("http://hengsir.cn:443/comm/get-comments",
+            {blogName:blogName},
+            function (data) {
+                console.log(data);
+                for(var i = 0;i < data.length;i++) {
+                    var html = "";
+                    html += '<div class="comment-li">'
+                    html += '<b class="author">' + data[i].author + ':</b>'
+                    html += '</br>'
+                    html += '<span class="text">' + data[i].text + '</span>'
+                    html += '</div>'
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+</script>
+
+</body>
+</html>
