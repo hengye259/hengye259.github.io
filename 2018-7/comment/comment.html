@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="comment.css">
     <link rel="shortcut icon" href="favico.ico">
     <script src="jquery-1.11.1.min.js"></script>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!--<!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->-->
 </head>
 <body>
 <section>
@@ -62,7 +62,7 @@ function send(text,author) {
             alert("您的大名还没写")
             return;
         } else {
-            $.post("http://hengsir.cn:443/comm/to-comment",
+            $.post("https://hengsir.cn:443/comm/to-comment",
                 {text:text,blogName:blogName,author:author},
                 function (data) {
                     if (data.result == true){
@@ -82,7 +82,7 @@ function send(text,author) {
 //这个是获取博文的评论，虽然有一个参数，但也是不需要传
 function getComment() {
         var blogName = $("title").text();
-        $.get("http://hengsir.cn:443/comm/get-comments",
+        $.get("https://hengsir.cn:443/comm/get-comments",
             {blogName:blogName},
             function (data) {
                 console.log(data);
@@ -191,7 +191,7 @@ server.ssl.key-store-type=JKS
             alert("您的大名还没写")
             return;
         } else {
-            $.post("http://hengsir.cn:443/comm/to-comment",
+            $.post("https://hengsir.cn:443/comm/to-comment",
                 {text:text,blogName:blogName,author:author},
                 function (data) {
                     if (data.result == true){
@@ -206,7 +206,7 @@ server.ssl.key-store-type=JKS
 
     function getComment() {
         var blogName = $("title").text();
-        $.get("http://hengsir.cn:443/comm/get-comments",
+        $.get("https://hengsir.cn:443/comm/get-comments",
             {blogName:blogName},
             function (data) {
                 console.log(data);

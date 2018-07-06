@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="stylesheet" href="comment.css">
     <link rel="shortcut icon" href="favico.ico">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
 </head>
 <body>
 <section>
@@ -563,7 +563,7 @@ public class Main {
             alert("您的大名还没写")
             return;
         } else {
-            $.post("http://hengsir.cn:443/comm/to-comment",
+            $.post("https://hengsir.cn:443/comm/to-comment",
                 {text:text,blogName:blogName,author:author},
                 function (data) {
                     if (data.result == true){
@@ -578,7 +578,7 @@ public class Main {
 
     function getComment() {
         var blogName = $("title").text();
-        $.get("http://hengsir.cn:443/comm/get-comments",
+        $.get("https://hengsir.cn:443/comm/get-comments",
             {blogName:blogName},
             function (data) {
                 console.log(data);
