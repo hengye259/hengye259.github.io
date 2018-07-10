@@ -30,6 +30,7 @@
     }
 
     h3 {
+        float: left;
         padding-bottom: 5px;
         margin-top: 8px;
         padding-left: 30px;
@@ -124,6 +125,20 @@
         cursor: crosshair;
     }
 
+    .top-nav{
+        display: flex;
+        padding-left: 5px;
+        padding-right: 5px;
+        justify-content:center;
+        align-items:Center;
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        margin-right: 3%;
+        float: right;
+        height: 100%;
+        font-size: 30px;
+        box-shadow: 0 1px 2px rgba(0,0,0,.075);
+    }
 
     .navbar{
         width:100%;
@@ -145,6 +160,49 @@
         border-left: 4px lightgrey solid;
         padding-left: 5px;
         margin-left: 20px;
+    }
+
+    .nav>li {
+        position: relative;
+        display: block;
+    }
+
+    .navbar-default {
+        background-image: none;
+        background-color: #fff;
+        box-shadow: none;
+        font-size: 100%;
+    }
+
+    .navbar-brand, .navbar-nav {
+        font-size: 24px;
+    }
+
+    body.mobile .navbar-brand {
+        font-size: 36px;
+    }
+
+    body.mobile .navbar-nav {
+        font-size: 36px;
+    }
+    .navbar-brand {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+        font-size: 100%;
+    }
+
+    .navbar-right {
+        float: right!important;
+    }
+
+    .navbar-nav {
+        float: left;
+        margin: 0;
+    }
+
+    .nav {
+        margin-bottom: 0;
+        padding-left: 0;
+        list-style: none;
     }
 
     pre {

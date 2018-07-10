@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一个很好用的Chrome翻译插件</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
+    <link rel="shortcut icon" href="favico.ico">
+    <script src="jquery-1.11.1.min.js"></script>
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>一个很好用的Chrome翻译插件</h2>
+        <p>
+            作为一名软件开发者，经常上网查找一些技术文档查看，但这些文档偏偏又是英语的，同时作为一个中国人，真的是心有余而力不足。用过谷歌翻译，翻译软件。
+            但都有一个共同的问题就是不爽，又要copy，又要切程序切页面的操作真的烦。但是很久之前发现了一个神器----- <span style="color: red">「划词翻译」</span>。 <br>
+            <img src="icon.jpeg" style="margin-left: 25%;width: 50%" alt="">
+        </p>
+        <p>
+            正如名字一样，高亮选择词，句，段后，在阴影下会有一个小图标 <br>
+            <img src="yi.jpeg" style="margin-left: 25%;width: 50%" alt=""> <br>
+            点击后的效果：<br>
+            <img src="result.jpeg" style="margin-left: 25%;width: 50%" alt="">
+        </p>
+        <p>这个插件是chrome的扩展程序，我这里给出下载地址：<a href="https://github.com/Selection-Translator/crx-selection-translate" target="_blank">github下载地址</a>
+            里面有详细的安装教程跟其它的快捷键设置，好东西就要分享。
+        </p>
+        <p style="margin-left: 96%">〔完〕</p>
+
+    </div>
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
+
+
+</section>
+
+
+<script>
+    $(function () {
+
+        getComment();
+
+        $("#btn-comment").click(function () {
+            $("#comment-form").removeClass("hide");
+        })
+        $("#close").click(function () {
+            $("#comment-form").addClass("hide");
+        })
+        $("#submit").click(function () {
+            send($("#com-text").val(),$("#com-author").val());
+        })
+    });
+
+    function send(text,author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text){
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("https://hengsir.cn:443/comm/to-comment",
+                {text:text,blogName:blogName,author:author},
+                function (data) {
+                    if (data.result == true){
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+
+    function getComment() {
+        var blogName = $("title").text();
+        $.get("https://hengsir.cn:443/comm/get-comments",
+            {blogName:blogName},
+            function (data) {
+                console.log(data);
+                for(var i = 0;i < data.length;i++) {
+                    var html = "";
+                    html += '<div class="comment-li">'
+                    html += '<b class="author">' + data[i].author + ':</b>'
+                    html += '</br>'
+                    html += '<span class="text">' + data[i].text + '</span>'
+                    html += '</div>'
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+</script>
+
+</body>
+</html>
