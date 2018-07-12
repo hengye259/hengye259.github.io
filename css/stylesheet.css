@@ -54,7 +54,7 @@
 
 
     nav{
-        flex: 7;
+        /*flex: 7;*/
         margin-bottom: 20px;
         padding-left: 0;
         margin-top: 100px;
@@ -161,48 +161,7 @@
         margin-left: 20px;
     }
 
-    .nav>li {
-        position: relative;
-        display: block;
-    }
 
-    .navbar-default {
-        background-image: none;
-        background-color: #fff;
-        box-shadow: none;
-        font-size: 100%;
-    }
-
-    .navbar-brand, .navbar-nav {
-        font-size: 24px;
-    }
-
-    body.mobile .navbar-brand {
-        font-size: 36px;
-    }
-
-    body.mobile .navbar-nav {
-        font-size: 36px;
-    }
-    .navbar-brand {
-        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
-        font-size: 100%;
-    }
-
-    .navbar-right {
-        float: right!important;
-    }
-
-    .navbar-nav {
-        float: left;
-        margin: 0;
-    }
-
-    .nav {
-        margin-bottom: 0;
-        padding-left: 0;
-        list-style: none;
-    }
 
     pre {
         font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
