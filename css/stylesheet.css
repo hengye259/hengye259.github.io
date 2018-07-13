@@ -131,12 +131,12 @@
         padding-right: 5px;
         justify-content:center;
         align-items:Center;
-        border-right: 1px solid #ddd;
-        border-left: 1px solid #ddd;
+        /*border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;*/
         float: right;
         height: 100%;
         font-size: 30px;
-        box-shadow: 0 1px 2px rgba(0,0,0,.075);
+        /*box-shadow: 0 1px 2px rgba(0,0,0,.075);*/
     }
 
     .navbar{
