@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用Arrays.binarySearch(int[] a, int key)的坑</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
+    <link rel="shortcut icon" href="favico.ico">
+    <script src="jquery-1.11.1.min.js"></script>
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>使用Arrays.binarySearch(int[] a, int key)的坑</h2>
+        <p>自从hengsir来了这家公司后，跟我熟的都陆陆续续的闪了，感觉天生带着上位buf，我的两任老大都先后辞职了。。。</p>
+        <p>ok，因为老大的辞职，而我们组就剩我一个独苗了，很自然的他的工作都要由我来接手了。。其中一个就是接手一个4年前的项目，如今需要加一点
+        参数，在加完了新参数后就有一个bug了，那我们来看看这到底是什么一个bug。
+        <hr>
+        <span style="color: red">目的：使用Arrays.binarySearch(int[] a, int key)方法，判断a数组中是否含有key这个变量的值，如果有则返回大于0的数。</span>
+        <hr>
+            <pre>
+        <code>
+//在下面这串代码我以为能返回我想要的
+int[] arr = new int[]{23,31,33,34,35,36,39,40,32,30,1,2,3,4,5,6,7,8,9,10,11,25,26,27,28,29}
+//下面要使用该方法来在数组的哪个位置，>0说明在数组内
+System.out.println(Arrays.binarySearch(arr,39));
+
+//然后结果为：-27，这不是我想要的结果，理论上应该是大于0的返回
+        </code>
+    </pre>
+修改如下：
+        <pre>
+        <code>
+//在下面这串代码修改下
+int[] arr = new int[]{23,31,33,34,35,36,39,40,32,30,1,2,3,4,5,6,7,8,9,10,11,25,26,27,28,29}
+//先排序
+Arrays.sort(arr);
+System.out.println(Arrays.binarySearch(arr,39));
+
+//结果为：24，这样才是我想要的结果
+        </code>
+    </pre>
+        </p>
+        <hr>
+        <p>总结：使用Arrays.binarySearch()方法判断数组中是否含有某个值，需要先让数组进行排序，否则将不按预期进行。（没看源码不知何原因会不行）</p>
+        <p style="margin-left: 96%">〔完〕</p>
+
+    </div>
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
+
+
+</section>
+
+
+<script>
+    $(function () {
+
+        getComment();
+
+        $("#btn-comment").click(function () {
+            $("#comment-form").removeClass("hide");
+        })
+        $("#close").click(function () {
+            $("#comment-form").addClass("hide");
+        })
+        $("#submit").click(function () {
+            send($("#com-text").val(),$("#com-author").val());
+        })
+    });
+
+    function send(text,author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text){
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("https://hengsir.cn:443/comm/to-comment",
+                {text:text,blogName:blogName,author:author},
+                function (data) {
+                    if (data.result == true){
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+
+    function getComment() {
+        var blogName = $("title").text();
+        $.get("https://hengsir.cn:443/comm/get-comments",
+            {blogName:blogName},
+            function (data) {
+                console.log(data);
+                for(var i = 0;i < data.length;i++) {
+                    var html = "";
+                    html += '<div class="comment-li">'
+                    html += '<b class="author">' + data[i].author + ':</b>'
+                    html += '</br>'
+                    html += '<span class="text">' + data[i].text + '</span>'
+                    html += '</div>'
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+</script>
+
+</body>
+</html>
