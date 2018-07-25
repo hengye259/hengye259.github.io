@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>尚德教育</title>
+    <script src="jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
+    <link rel="shortcut icon" href="favico.ico">
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>尚德教育</h2>
+        <p>朋友们，学历的重要性不需要我多说，如果你需要提升自己的学历或者需要考取相关证书，可以看看以下内容：</p>
+        <p>尚德教育专注于学历教，
+            职业教育的互联网教育公司。培训课程和服务范围广阔，提供全国精品直播、
+            录播课程等，业务涵盖上班族学历 MBA 会计师 教师证 人力等职业资格认证以及相关就业服务。
+            除了以上的还有专升本，考研。总之面对的对象分别是<span style="color: red;">专科，本科，研究生</span>。
+            你可以坐着看，躺着看，蹲着看，倒着看，手机看，电脑看啥的。
+        </p>
+        <hr>
+        <img style="width: 50%;margin-left: 25%" src="sd1.jpeg" alt=""><br>
+        <img style="width: 50%;margin-left: 25%" src="sd2.jpeg" alt=""><br>
+        <img style="width: 50%;margin-left: 25%" src="sd3.jpeg" alt=""><br>
+        <hr>
+        <p>如果你需要咨询相关信息，可以扫描下方二维码，加<span style="color: red;">林老师</span>的微信，报恒哥最帅有vip代遇。另外，报名后会帮你购买一份保险是取决于你对考试的满意程度。加微信了解吧。
+        </p>
+        <img style="width: 50%;margin-left: 25%" src="code.jpeg" alt=""><br>
+        <p style="margin-left: 96%">〔完〕</p>
+
+    </div>
+
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
+
+</section>
+<script>
+    $(function () {
+
+        getComment();
+
+        $("#btn-comment").click(function () {
+            $("#comment-form").removeClass("hide");
+        })
+        $("#close").click(function () {
+            $("#comment-form").addClass("hide");
+        })
+        $("#submit").click(function () {
+            send($("#com-text").val(),$("#com-author").val());
+        })
+    });
+
+    function send(text,author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text){
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("https://hengsir.cn:443/comm/to-comment",
+                {text:text,blogName:blogName,author:author},
+                function (data) {
+                    if (data.result == true){
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+
+    function getComment() {
+        var blogName = $("title").text();
+        $.get("https://hengsir.cn:443/comm/get-comments",
+            {blogName:blogName},
+            function (data) {
+                console.log(data);
+                for(var i = 0;i < data.length;i++) {
+                    var html = "";
+                    html += '<div class="comment-li">'
+                    html += '<b class="author">' + data[i].author + ':</b>'
+                    html += '</br>'
+                    html += '<span class="text">' + data[i].text + '</span>'
+                    html += '</div>'
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+</script>
+
+
+</body>
+</html>
