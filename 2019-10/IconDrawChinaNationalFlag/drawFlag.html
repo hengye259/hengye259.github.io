@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用java实现微信头像添加国旗</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
+    <link rel="shortcut icon" href="favico.ico">
+    <script src="jquery-1.11.1.min.js"></script>
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>用java实现微信头像添加国旗</h2>
+        <p>
+            由于国庆前一阵子微信头像添加国旗刷爆朋友圈，节后换头像时无意中思考了下原理，感叹技术有复杂程序高大上的，也有能引起一时风靡但背后却简单无比的，就以这次的头像添加国旗功能为例。
+        </p>
+        <p>原理：
+            <ul>
+                <li>1、拿到用户上传的头像图片。</li>
+                <li>2、把国旗图片画到用户头像图片的右下角。</li>
+            </ul>
+        没错，我认为实现思路就这么的简单。下面看看具体代码怎么写：
+        </p>
+        <p>
+            上传图片的我们不细讲，懂的自然懂，不懂的百度、google去。关键也只是怎么把国旗画到头像的右下角去，我们看下计算思路图片。
+        </p>
+        <img src="gongshi.png" style="width: 70%;margin-left: 15%" alt="">
+        <p>外面白色的就是用户头像，里面红色的为国旗的位置，根据Graphics2D的drawImage方法。
+            <pre>
+    /**
+    * 绘画
+    *
+    * @param img 要绘制的图像，这里就是国旗
+    * @param x 横坐标起点
+    * @param y 纵坐标起点
+    * @throws width 绘制的高度
+    * @param height 绘制的高度
+    * @throws observer 图片观察者，传null即可
+    */
+    drawImage(Image img,
+            int x, int y,
+            int width, int height,
+            ImageObserver observer)
+            </pre>
+        我们只需要把x和y的坐标求出来，就可以实现把国旗画到头像右下角的位置了。x和y也很好求，只要用大图的横纵长度-小图的横纵长度就能分别求出x和y。
+        实现（伪代码）：
+<pre>
+    //读取传进来的头像图片
+    BufferedImage icon = ImageIO.read(new InputStream("....头像"));
+    //创建头像的画布
+    Graphics2D icon2D = icon.createGraphics();
+    //用BufferedImage读取国旗图片
+    BufferedImage flag = ImageIO.read(new InputStream("...国旗"));
+    //计算出开始画图的坐标点，横坐标为
+    int x = icon.getWidth() - flag.getWidth();
+    int y = icon.getHeight() - flag.getHeight();
+    //在头像画布上开始画
+    icon2D.drawImage(flag,x,y,flag.getWidth(),flag.getHeight(),null);
+    //销毁头像画布
+    icon2D.dispose();
+    //保存
+    ImageIO.write(icon,"jpg",new File("...保存到新文件"));
+</pre>
+        </p>
+    <p>
+        光说没用，恒哥已经做了个简易版的，由于时间关系，页面也是最简单的版本。<br>
+        <a href="http://hengsir.cn:8085/index" target="_blank">体验</a>
+    </p>
+
+
+        <p style="margin-left: 96%">〔完〕</p>
+
+    </div>
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
+
+
+</section>
+
+
+<script>
+    $(function () {
+
+        getComment();
+
+        $("#btn-comment").click(function () {
+            $("#comment-form").removeClass("hide");
+        })
+        $("#close").click(function () {
+            $("#comment-form").addClass("hide");
+        })
+        $("#submit").click(function () {
+            send($("#com-text").val(), $("#com-author").val());
+        })
+    });
+
+    function send(text, author) {
+        var blogName = $("title").text();
+        if (null == text || "" == text) {
+            alert("评论内容不能为空")
+            return;
+        } else if (null == author || "" == author) {
+            alert("您的大名还没写")
+            return;
+        } else {
+            $.post("https://hengsir.cn:443/comm/to-comment",
+                {text: text, blogName: blogName, author: author},
+                function (data) {
+                    if (data.result == true) {
+                        window.location.reload();
+                    } else {
+                        alert(data.detail);
+                    }
+                }
+            );
+        }
+    }
+
+    function getComment() {
+        var blogName = $("title").text();
+        $.get("https://hengsir.cn:443/comm/get-comments",
+            {blogName: blogName},
+            function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    var html = "";
+                    html += '<div class="comment-li">'
+                    html += '<b class="author">' + data[i].author + ':</b>'
+                    html += '</br>'
+                    html += '<span class="text">' + data[i].text + '</span>'
+                    html += '</div>'
+                    $("#add-flag").append(html)
+                }
+            }
+        );
+    }
+</script>
+
+</body>
+</html>
