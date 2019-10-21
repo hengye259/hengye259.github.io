@@ -370,65 +370,7 @@ public class SerialTest extends Observable implements SerialPortEventListener {
 
 </section>
 
-
-<script>
-    $(function () {
-
-        getComment();
-
-        $("#btn-comment").click(function () {
-            $("#comment-form").removeClass("hide");
-        })
-        $("#close").click(function () {
-            $("#comment-form").addClass("hide");
-        })
-        $("#submit").click(function () {
-            send($("#com-text").val(),$("#com-author").val());
-        })
-    });
-
-    function send(text,author) {
-        var blogName = $("title").text();
-        if (null == text || "" == text){
-            alert("评论内容不能为空")
-            return;
-        } else if (null == author || "" == author) {
-            alert("您的大名还没写")
-            return;
-        } else {
-            $.post("https://hengsir.cn:443/comm/to-comment",
-                {text:text,blogName:blogName,author:author},
-                function (data) {
-                    if (data.result == true){
-                        window.location.reload();
-                    } else {
-                        alert(data.detail);
-                    }
-                }
-            );
-        }
-    }
-
-    function getComment() {
-        var blogName = $("title").text();
-        $.get("https://hengsir.cn:443/comm/get-comments",
-            {blogName:blogName},
-            function (data) {
-                console.log(data);
-                for(var i = 0;i < data.length;i++) {
-                    var html = "";
-                    html += '<div class="comment-li">'
-                    html += '<b class="author">' + data[i].author + ':</b>'
-                    html += '</br>'
-                    html += '<span class="text">' + data[i].text + '</span>'
-                    html += '</div>'
-                    $("#add-flag").append(html)
-                }
-            }
-        );
-    }
-</script>
-
+<script type="text/javascript" src="../../webSocket.js"></script>
 
 </body>
 </html>

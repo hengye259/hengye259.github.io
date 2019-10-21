@@ -6,7 +6,7 @@ function init() {
     }
     if (window.WebSocket) {
         if (webSocket == null) {
-            webSocket = new WebSocket("ws://hengsir.cn:8087/");
+            webSocket = new WebSocket("ws://hengsir.cn:8086/");
         }
         //打开webSokcet连接时，回调该函数
         webSocket.onopen = function (data) {
