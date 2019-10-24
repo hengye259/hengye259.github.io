@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>新增留言功能与实现过程</title>
+    <title>留言功能2.0版介绍</title>
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="stylesheet" href="comment.css">
     <link rel="shortcut icon" href="favico.ico">
@@ -12,130 +12,28 @@
 <body>
 <section>
     <div class="context">
-        <h2>新增留言功能与实现过程</h2>
-        <p>一直有人说让我在博客里添加评论功能，但这是放在github的服务器里，而github是只允许纯静态资源的内容，所以说不能有java代码
-        在项目中，前天突然看到了"跨域"这个词，瞬间有了想法，就是尝试利用跨域来实现添加评论功能。也只是抱着试试，我也不知道github是否允许，
-        研究了下，踩了一些坑后，如今终于完成。</p>
+        <h2>留言功能2.0版介绍</h2>
+        <h4>回顾以前</h4>
         <p>
-            具体实现：
-        <ol>
-            <li>后端：Springboot 搭建接口，调用数据库什么的。最重要的是设置允许跨域请求，然后就放服务器跑起来。</li>
-            <li>前端：ajax请求，自行处理</li>
-        </ol>
+            前端：ajax跨域请求，请求协议是https。 <br>
+            后端：springboot内置tomcat，开放跨域权限，通过controller接收并响应。
         </p>
-
+        <h4>优缺点：</h4>
+        <ul>
+            <li>优点：代码简单，无论前后端代码比较常用普通；短链接，资源问题几乎不存在。</li>
+            <li>缺点：慢！想拓展新功能如有新评论想推送通知给在线用户无法实现。</li>
+        </ul>
         <hr>
-        <p>Springboot设置允许跨域请求：添加配置类，在其中加入这个Bean
-            <pre>
-        <code>
-@Configuration
-public class SpringMVCConfig{
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
-        WebMvcConfigurer config = new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*")
-                        .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
-                        .allowCredentials(false).maxAge(3600);
-            }
-        };
-        return config;
-    }
-}
-        </code>
-    </pre>
-        </p>
-
-        <hr>
+        <h4>放眼现在</h4>
         <p>
-            前端js进行 ajax 请求：
-            <pre>
-        <code>
-//这个是提交评论，虽然有三个参数，但只需要text评论内容和author评论人就行，blogName是title的值
-function send(text,author) {
-        var blogName = $("title").text();
-        if (null == text || "" == text){
-            alert("评论内容不能为空")
-            return;
-        } else if (null == author || "" == author) {
-            alert("您的大名还没写")
-            return;
-        } else {
-            $.post("https://hengsir.cn:443/comm/to-comment",
-                {text:text,blogName:blogName,author:author},
-                function (data) {
-                    if (data.result == true){
-                        window.location.reload();
-                    } else {
-                        alert(data.detail);
-                    }
-                }
-            );
-        }
-    }
-        </code>
-    </pre>
-
-        <pre>
-        <code>
-//这个是获取博文的评论，虽然有一个参数，但也是不需要传
-function getComment() {
-        var blogName = $("title").text();
-        $.get("https://hengsir.cn:443/comm/get-comments",
-            {blogName:blogName},
-            function (data) {
-                console.log(data);
-                for(var i = 0;i < data.length;i++) {
-                    var html = "";
-                    //组装自己的html列表，再动态append
-                    $("#add-flag").append(html)
-                }
-            }
-        );
-    }
-        </code>
-    </pre>
-
+            前端：websocket做为客户端。 <br>
+            后端：netty做为服务端，通过json数据定义不同的接口。
         </p>
-        <hr>
-        <p>弄完这些，github是https的所以不能访问http的资源，所以一开始的办法是在html的head标签内加入 <br>
-            &lt;meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"&gt;
-            <br> 用意貌似是将http资源自动转成https的，但是我后端没有配置ssl一样是无法成功在github内跨域，所以需要在Springboot中也添加ssl的配置,首先要有个证书文件，腾讯云的去腾讯云下载，其它同理，下载完后把证书文件放到类resource目录下</p>
-
-        <pre>
-            <code>
-#在config.properties文件中添加以下配置
-#新增ssl证书
-server.port=443
-server.ssl.key-store=classpath:www.hengsir.cn.jks
-server.ssl.key-store-password=你自己的密码
-server.ssl.key-store-type=JKS
-            </code>
-        </pre>
-        <p>在主启动类中添加以下两个方法：
-        <pre>
-        <code>
-    @Bean
-    public ServletWebServerFactory servletContainer(){
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-        return tomcat;
-    }
-
-    // 配置http
-    private Connector createStandardConnector() {
-        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setPort(8080);
-        connector.setSecure(false);
-        connector.setRedirectPort(443);//自动重定向到443端口
-        return connector;
-    }
-        </code>
-    </pre>
-        </p>
-        <hr>
-        <p>以上就是本次新增的留言功能实现的过程，接口可以开放提供调用，只要你有网站需要，就能用。</p>
+        <h4>优缺点：</h4>
+        <ul>
+            <li>优点：速度快，扩展性强。</li>
+            <li>缺点：服务端代码实现比以前难了，需要有netty相关经验；长链接，资源问题也是要注意的点。</li>
+        </ul>
         <p style="margin-left: 96%">〔完〕</p>
 
     </div>
@@ -166,63 +64,6 @@ server.ssl.key-store-type=JKS
 </section>
 
 
-<script>
-    $(function () {
-
-        getComment();
-
-        $("#btn-comment").click(function () {
-            $("#comment-form").removeClass("hide");
-        })
-        $("#close").click(function () {
-            $("#comment-form").addClass("hide");
-        })
-        $("#submit").click(function () {
-            send($("#com-text").val(),$("#com-author").val());
-        })
-    });
-
-    function send(text,author) {
-        var blogName = $("title").text();
-        if (null == text || "" == text){
-            alert("评论内容不能为空")
-            return;
-        } else if (null == author || "" == author) {
-            alert("您的大名还没写")
-            return;
-        } else {
-            $.post("https://hengsir.cn:443/comm/to-comment",
-                {text:text,blogName:blogName,author:author},
-                function (data) {
-                    if (data.result == true){
-                        window.location.reload();
-                    } else {
-                        alert(data.detail);
-                    }
-                }
-            );
-        }
-    }
-
-    function getComment() {
-        var blogName = $("title").text();
-        $.get("https://hengsir.cn:443/comm/get-comments",
-            {blogName:blogName},
-            function (data) {
-                console.log(data);
-                for(var i = 0;i < data.length;i++) {
-                    var html = "";
-                    html += '<div class="comment-li">'
-                    html += '<b class="author">' + data[i].author + ':</b>'
-                    html += '</br>'
-                    html += '<span class="text">' + data[i].text + '</span>'
-                    html += '</div>'
-                    $("#add-flag").append(html)
-                }
-            }
-        );
-    }
-</script>
-
+<script type="text/javascript" src="../../webSocket.js"></script>
 </body>
 </html>
