@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>戊戟小说网</title>
+    <link rel="stylesheet" href="../stylesheet.css">
+    <link rel="stylesheet" href="../comment.css">
+    <link rel="shortcut icon" href="../favico.ico">
+    <script src="../jquery-1.11.1.min.js"></script>
+   <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>戊戟小说网</h2>
+        <span class="tips">输入戊戟小说网的原网址以抓取小说：</span><br>
+        <input type="text" style="width:70%;font-size: 20px;height:40px;border:0.5px solid #378888" id="newSection"><button id="qd" style="height:30px;width:100px;font-size:15px">确定</button>
+        <br>
+        <br>
+        <span class="tips">搜索该小说内容（例如第几章[只需要数字或者中文：三十四等]、标题[可不完整]）：</span><br>
+        <input type="text" style="width:70%;height:40px;font-size: 20px;border:0.5px solid #378888" id="sectionNo"><button id="qw" style="height:30px;width:100px;font-size:15px">前往</button>
+        <br><br>
+        <a class="pre" onclick="pre()" style="padding-right: 25%">上一章</a>   <a class="mulu" onclick="mulu()" style="padding-right: 25%">目录</a>  <a class="next" onclick="next()">下一章</a>
+        <p id="content">
+
+        </p>
+        <p style="margin-left: 96%">〔完〕</p>
+        <a class="pre" onclick="pre()" style="padding-right: 50%">上一章</a>   <a class="next" onclick="next()">下一章</a>
+    </div>
+    <div class="comment">
+        <h3>留言板</h3>
+        <div id="add-flag" style="display: block">
+
+            <!--<div class="comment-li">
+                <b class="author">恒爷</b> <br>
+                <span class="text">说得很好</span>
+            </div>-->
+        </div>
+
+        <button class="btn-comment" id="btn-comment">我要留言</button>
+        <div id="comment-form" class="modal hide">
+            <h3>写留言</h3>
+            <div class="comment-li">
+                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
+                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
+            </div>
+            <br>
+            <button id="close" class="btn-close">关闭</button>
+            <button id="submit" class="btn-submit">提交</button>
+        </div>
+    </div>
+
+
+</section>
+
+
+<script type="text/javascript" src="wuji.js"></script>
+</body>
+</html>

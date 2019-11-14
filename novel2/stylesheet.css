@@ -1,0 +1,129 @@
+    body {
+        font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+        font-size: 18px;
+        display: block;
+        margin: 8px;
+    }
+
+    .tips{
+        font-size: 18px;
+        color: #2e6da4;
+    }
+
+    img {
+        width:30%;
+        box-shadow: 0 0 10px #555;
+        border-radius: 6px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        -webkit-box-shadow: 0 0 10px #555;
+    }
+    div{
+        border-radius: 6px;
+        display: table-cell;
+        vertical-align: inherit;
+    }
+
+    .pinglun{
+        display: inherit;
+        width: 90%;
+        margin:10px auto;
+    }
+
+
+    .context{
+        display: block;
+        padding: 2% 8% 5% 8%;
+        border: 1px solid LightGrey;
+    }
+
+    h2 {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+        margin-bottom: 60px;
+        margin-bottom: 40px;
+        padding: 5px;
+        border-bottom: 2px LightGrey solid;
+        width: 98%;
+        line-height: 150%;
+        color: cornflowerblue;
+    }
+    section{
+        display:block;
+        border-collapse: separate;
+        border-spacing: 2px;
+        border-color: grey;
+        width: 70%;
+    }
+    p{
+        line-height:1.8;
+        display: block;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+    }
+
+    .tempPic{
+        width:90%;
+    }
+
+    a{
+        cursor: crosshair;
+    }
+
+    blockquote {
+        border-left: 4px lightgrey solid;
+        padding-left: 5px;
+        margin-left: 20px;
+    }
+
+    pre {
+        font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
+        font-size: 75%;
+        background-color: #F4F4F4;
+        border: 1px solid #E0E0E0;
+        border-radius: 4px;
+        padding: 5px;
+        line-height: 1.5;
+
+        display: block;
+        width: 100%;
+        overflow: auto;
+    }
+
+    code {
+        font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
+    }
+    @media only screen and (max-device-width: 620px){
+        section {
+            display: block;
+            border-collapse: separate;
+            border-spacing: 2px;
+            border-color: grey;
+            width: 90%;
+        }
+        img {
+            width:90%;
+            box-shadow: 0 0 10px #555;
+            border-radius: 6px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            -webkit-box-shadow: 0 0 10px #555;
+        }
+
+        .tempPic{
+            width: 90%;
+        }
+        body{
+            font-size: 33px;
+        }
+        .tips{
+            font-size: 20px;
+            color: #2e6da4;
+        }
+
+    }
