@@ -10,8 +10,8 @@ function init() {
     }
     if (window.WebSocket) {
         if (webSocket == null) {
-            webSocket = new WebSocket("wss://hengsir.cn:6600/");
-            //webSocket = new WebSocket("ws://127.0.0.1:6600/");
+            webSocket = new WebSocket("wss://hengsir.cn:2333/");
+            //webSocket = new WebSocket("wss://localhost:2333/");
         }
         //打开webSokcet连接时，回调该函数
         webSocket.onopen = function (data) {
