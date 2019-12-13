@@ -25,6 +25,7 @@ function init() {
             var json = JSON.parse(str);
             console.log("str:" + str);
             console.log("json:" + json);
+            showLoading(false);
             //获取消息类型
             var type = json.type;
             var code = json.code;
@@ -100,6 +101,7 @@ function init() {
 
 //发送消息到服务端
 function sendMessage(message) {
+    showLoading(true);
     webSocket.send(message);
 }
 
@@ -216,6 +218,19 @@ function readByInput(sectionNo) {
     sendMessage(msg);
 }
 
+function showLoading(show){
+
+    if(show){
+        $("#context").addClass("overLoading");
+        /*$("#over").style.display="block";
+        $("#layout").style.display="block";*/
+    }else{
+        $("#context").removeClass("overLoading");
+        /*$("#over").style.display="none";
+        $("#layout").style.display="none";*/
+    }
+}
+
 $(function () {
     init();
 
@@ -238,3 +253,4 @@ $(function () {
         readByInput($("#sectionNo").val());
     });
 });
+
