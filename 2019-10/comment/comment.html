@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="comment.css">
     <link rel="shortcut icon" href="favico.ico">
     <script src="jquery-1.11.1.min.js"></script>
-   <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
 </head>
 <body>
 <section>
@@ -37,14 +37,14 @@
         <p style="margin-left: 96%">〔完〕</p>
 
     </div>
-    <div class="comment">
+    <!--<div class="comment">
         <h3>留言板</h3>
         <div id="add-flag" style="display: block">
 
-            <!--<div class="comment-li">
+            &lt;!&ndash;<div class="comment-li">
                 <b class="author">恒爷</b> <br>
                 <span class="text">说得很好</span>
-            </div>-->
+            </div>&ndash;&gt;
         </div>
 
         <button class="btn-comment" id="btn-comment">我要留言</button>
@@ -58,11 +58,30 @@
             <button id="close" class="btn-close">关闭</button>
             <button id="submit" class="btn-submit">提交</button>
         </div>
+    </div>-->
+    <div class="comment">
+        <!-- Gitalk 评论 start  -->
+        <!-- Link Gitalk 的支持文件  -->
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+        <div id="gitalk-container"></div>
+        <!-- Gitalk end -->
     </div>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({
+            // gitalk的主要参数
+            clientID: 'a4d850456236ad538573',
+            clientSecret: 'f3927d6c00e6cfc7e6add7fa0d690a7c89ee834a',
+            repo: 'gittalk',
+            owner: 'hengye259',
+            admin: ['hengye259'],
+            id: location.href,
+        });
+        gitalk.render('gitalk-container');
+    </script>
 
 
 </section>
-
 
 <script type="text/javascript" src="../../webSocket.js"></script>
 </body>
