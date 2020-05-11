@@ -6,7 +6,7 @@
     }
 
     img {
-        width:30%;
+        width:90%;
         box-shadow: 0 0 10px #555;
         border-radius: 6px;
         margin-left: auto;
@@ -17,7 +17,7 @@
     }
     div{
         border-radius: 6px;
-        display: table-cell;
+        display: block;
         vertical-align: inherit;
     }
 

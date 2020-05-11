@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="comment.css">
     <link rel="shortcut icon" href="favico.ico">
     <script src="jquery-1.11.1.min.js"></script>
-    <!--gittalk-->
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-    <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
     <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
 </head>
 <body>
@@ -39,48 +36,31 @@
         </ul>
         <p style="margin-left: 96%">〔完〕</p>
 
-    </div>
-    <!--<div class="comment">
-        <h3>留言板</h3>
-        <div id="add-flag" style="display: block">
-
-            &lt;!&ndash;<div class="comment-li">
-                <b class="author">恒爷</b> <br>
-                <span class="text">说得很好</span>
-            </div>&ndash;&gt;
-        </div>
-
-        <button class="btn-comment" id="btn-comment">我要留言</button>
-        <div id="comment-form" class="modal hide">
-            <h3>写留言</h3>
-            <div class="comment-li">
-                <span>请留下您的大名：</span><input type="text" class="modal-author" id="com-author"> <br>
-                <span>请留下您想说的：</span><textarea cols="50" rows="5" class="modal-text" id="com-text"></textarea>
-            </div>
-            <br>
-            <button id="close" class="btn-close">关闭</button>
-            <button id="submit" class="btn-submit">提交</button>
-        </div>
-    </div>-->
-    <div class="comment">
         <!-- Gitalk 评论 start  -->
         <!-- Link Gitalk 的支持文件  -->
+        <!--gittalk-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+        <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
         <div id="gitalk-container"></div>
+        <script type="text/javascript">
+            var gitalk = new Gitalk({
+                // gitalk的主要参数
+                clientID: 'a4d850456236ad538573',
+                clientSecret: 'f3927d6c00e6cfc7e6add7fa0d690a7c89ee834a',
+                repo: 'hengye259.github.io',
+                owner: 'hengye259',
+                admin: ['hengye259'],
+                id: location.pathname,
+                distractionFreeMode: false  // Facebook-like distraction free mode
+            });
+            gitalk.render('gitalk-container');
+        </script>
         <!-- Gitalk end -->
     </div>
-    <script type="text/javascript">
-        var gitalk = new Gitalk({
-            // gitalk的主要参数
-            clientID: 'a4d850456236ad538573',
-            clientSecret: 'f3927d6c00e6cfc7e6add7fa0d690a7c89ee834a',
-            repo: 'gittalk',
-            owner: 'hengye259',
-            admin: ['hengye259'],
-            id: location.href,
-        });
-        gitalk.render('gitalk-container');
-    </script>
 
+    <div class="comment">
+
+    </div>
 </section>
 
 <script type="text/javascript" src="../../webSocket.js"></script>

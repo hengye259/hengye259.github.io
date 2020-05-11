@@ -6,6 +6,10 @@
 
 }
 
+.gitalk{
+    width: 80%;
+}
+
 .comment-li{
     margin-bottom: 10px;
     display: block;
