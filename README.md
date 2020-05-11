@@ -1,2 +1,2 @@
 # yuheng
-https://hengye259.github.io/yuheng/
+https://hengye259.github.io
