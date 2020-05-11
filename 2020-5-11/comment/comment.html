@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言功能3.0版介绍</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="comment.css">
+    <link rel="shortcut icon" href="favico.ico">
+    <script src="jquery-1.11.1.min.js"></script>
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+</head>
+<body>
+<section>
+    <div class="context">
+        <h2>留言功能3.0版介绍</h2>
+        <p>舍弃自研留言微服务,原因是穷~~</p>
+        <br>
+        华丽分割线
+        <hr>
+        <p>3.0版本使用gitalk，唯一缺点是对非软件行业的朋友们不友好。</p>
+        再次华丽
+        <hr>
+        <p>接入教程：
+            <ul>
+                <li>
+                    <p>首先创建github认证，进入<a target="_blank" href="https://github.com/settings/applications/new">https://github.com/settings/applications/new</a>，按下图所示填好并保存。<br>
+                        <img src="new.png" alt=""> <br>
+                        <img src="clientData.png" alt="">
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        把以下代码直接拷到，是直接拷到需要放评论的html文件中的相应地方。
+                        <pre>
+&lt;!-- Gitalk 评论 start  --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"&gt;&lt;/script&gt;
+&lt;div id="gitalk-container"&gt;&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+    var gitalk = new Gitalk({
+        // gitalk的主要参数
+        clientID: '上图client Id打码的值',
+        clientSecret: '上图client secret打码的值',
+        repo: '你的仓库名，如：&lt;username&gt;.github.io',
+        owner: '你的用户名',
+        admin: ['你的用户名'],
+        id: location.pathname,
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+&lt;/script&gt;
+&lt;!-- Gitalk end --&gt;
+                        </pre>
+                    </p>
+                </li>
+                <li>
+                    <p>配置完后可能出现如下的情况，只需要点击下用github登录，用你自己的github账户登录即可。 <br>
+                        <img src="q1.png" alt="">
+                    </p>
+                </li>
+            </ul>
+        </p>
+        <p style="margin-left: 96%">〔完〕</p>
+    </div>
+    <div class="comment">
+        <!-- Gitalk 评论 start  -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+        <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+        <div id="gitalk-container"></div>
+        <script type="text/javascript">
+            var gitalk = new Gitalk({
+                // gitalk的主要参数
+                clientID: 'a4d850456236ad538573',
+                clientSecret: '11ea06942d78e3c813ab44ee265aa4b5c5e6f9fb',
+                repo: 'hengye259.github.io',
+                owner: 'hengye259',
+                admin: ['hengye259'],
+                id: location.pathname,
+                distractionFreeMode: false  // Facebook-like distraction free mode
+            });
+            gitalk.render('gitalk-container');
+        </script>
+        <!-- Gitalk end -->
+    </div>
+
+</section>
+
+<script type="text/javascript" src="../../webSocket.js"></script>
+</body>
+</html>
